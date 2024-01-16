@@ -6,6 +6,7 @@ export function Footer() {
         target="_blank"
         rel="noopener noreferrer"
         title="My GitHub"
+        className="hover:underline"
       >
         Made by Martín
       </a>

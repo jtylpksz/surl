@@ -9,6 +9,7 @@ export function Nav() {
         target="_blank"
         rel="noopener noreferrer"
         title="Source code"
+        className='hover:opacity-70 transition'
       >
         <Github />
       </a>
