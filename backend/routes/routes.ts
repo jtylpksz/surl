@@ -1,6 +1,6 @@
 import express from 'express';
 import { connection } from '../db/connection';
-import { randomBytes } from 'crypto';
+import { randomBytes } from 'node:crypto';
 
 export const router = express.Router();
 

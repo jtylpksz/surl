@@ -3,6 +3,7 @@ import { SForm } from '@/components/form';
 import { Nav } from '@/components/nav';
 
 export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   return (
     <main className="p-4 mx-auto flex max-w-[1150px] flex-col items-center gap-2 h-screen">
