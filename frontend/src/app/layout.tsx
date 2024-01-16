@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Inter as FontSans } from 'next/font/google';
 
 import { ThemeProvider } from '@/components/theme-provider';
 import './styles/globals.css';
@@ -26,18 +25,18 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  metadataBase: new URL('https://surl.vercel.app'),
+  metadataBase: new URL('https://surlm.vercel.app/'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     title: 'sURL',
     description: 'URL Shortener',
-    url: 'https://surl.vercel.app',
+    url: 'https://surlm.vercel.app/',
     siteName: 'sURL',
     images: [
       {
-        url: 'https://surl.vercel.app/favicon.png',
+        url: 'https://surlm.vercel.app/favicon.png',
         width: 800,
         height: 600,
       },
@@ -49,14 +48,9 @@ export const metadata: Metadata = {
     title: 'sURL',
     description: 'URL Shortener',
     creator: '@martinval11_',
-    images: ['https://surl.vercel.app/favicon.png'],
+    images: ['https://surlm.vercel.app/favicon.png'],
   },
 };
-
-export const fontSans = FontSans({
-  subsets: ['latin'],
-  variable: '--font-sans',
-});
 
 export default function RootLayout({
   children,
