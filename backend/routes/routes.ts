@@ -38,7 +38,7 @@ router.get('/urls', (_req, res) => {
 router.post('/addUrl', (req, res) => {
   const { url } = req.body;
 
-  const id = randomBytes(16).toString("hex");
+  const id = randomBytes(16).toString('hex');
   const query = `
     INSERT INTO urls (id, url)
     VALUES ('${id}', '${url}');
@@ -50,28 +50,8 @@ router.post('/addUrl', (req, res) => {
     }
     res.json({
       ok: true,
-      urlShortened: `https://localhost:3000/${id}`, 
-      msg: 'Short URL Added'
-    });
-  });
-});
-
-router.delete('/deleteUrl/:id', (req, res) => {
-  const { id } = req.params;
-
-  const query = `
-    DELETE FROM urls
-    WHERE id = ${id};
-  `;
-
-  connection.query(query, (error) => {
-    if (error) {
-      res.send(error)
-    }
-    res.json({
-      ok: true,
-      urlDeleted: `https://localhost:5000/${id}`,
-      msg: 'Short URL Deleted'
+      urlShortened: `http://localhost:3000/${id}`,
+      msg: 'Short URL Added',
     });
   });
 });

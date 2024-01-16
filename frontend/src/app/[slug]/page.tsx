@@ -9,8 +9,8 @@ type OutputReq = {
 const getWebsiteURL = async (id: string) => {
   const fullURL: OutputReq[] | any = await db(`/get/${id}`);
 
-  if (fullURL[0].id === id && fullURL[0].url) {
-    return fullURL[0].url;
+  if (fullURL[0]?.id === id && fullURL[0]?.url) {
+    return fullURL[0]?.url;
   }
   return {
     notFound: true,

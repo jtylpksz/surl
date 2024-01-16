@@ -4,8 +4,26 @@ import { Label } from './ui/label';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { shortURL } from '@/actions/shortURL';
-import { useFormState } from 'react-dom';
+import { useFormState, useFormStatus } from 'react-dom';
 import { useEffect, useState } from 'react';
+import { Wand2, Loader2 } from 'lucide-react';
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button type="submit" disabled={pending}>
+      {pending ? (
+        <span className="flex items-center">
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Shortening URL...
+        </span>
+      ) : (
+        <span>Shorten URL</span>
+      )}
+    </Button>
+  );
+}
 
 export function SForm() {
   const [shortenedURLState, setShortenedURLState] = useState('');
@@ -35,8 +53,10 @@ export function SForm() {
       </Label>
 
       <Label>
-        <span>sURL</span>
-        <Input value={shortenedURLState} className="mt-2" disabled />
+        <span className="flex items-center gap-2">
+          <Wand2 width={20} height={20} className="opacity-70" /> sURL
+        </span>
+        <Input value={shortenedURLState} placeholder='Your shortened URL will be placed here' className="mt-2" disabled={shortenedURLState !== '' ? false : true} />
       </Label>
 
       {shortenedURLState ? (
@@ -56,7 +76,7 @@ export function SForm() {
         </Button>
       ) : null}
 
-      <Button type="submit">Submit</Button>
+      <SubmitButton />
     </form>
   );
 }
