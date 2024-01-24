@@ -35,7 +35,7 @@ export const shortURL = async (_prevState: any, formData: FormData) => {
     }
     throw new Error('HTTP Error');
   } else {
-    const id = randomBytes(16).toString('hex');
+    const id = randomBytes(8).toString('hex');
     const query = `
     INSERT INTO urls (id, url)
     VALUES ('${id}', '${normalURL}');
@@ -43,8 +43,10 @@ export const shortURL = async (_prevState: any, formData: FormData) => {
 
     try {
       await dbProd.execute(query);
-      const getAll = await dbProd.execute(`SELECT * FROM urls WHERE url = '${normalURL}';`)
-      
+      const getAll = await dbProd.execute(
+        `SELECT * FROM urls WHERE url = '${normalURL}';`
+      );
+
       return {
         ok: true,
         urlShortened: `https://surlm.vercel.app/${getAll.rows[0].id}`,
