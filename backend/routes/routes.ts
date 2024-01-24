@@ -18,7 +18,7 @@ router.get('/get/:id', (req, res) => {
 
   connection.query(query, (error, results) => {
     if (error) {
-      res.send(error);
+      res.send('Error connecting to database');
     }
     res.send(results);
   });
@@ -29,7 +29,7 @@ router.get('/urls', (_req, res) => {
 
   connection.query(query, (error, results) => {
     if (error) {
-      res.send(error);
+      res.send('Error on query');
     }
     res.send(results);
   });
@@ -46,7 +46,7 @@ router.post('/addUrl', (req, res) => {
 
   connection.query(query, (error) => {
     if (error) {
-      res.send(error);
+      res.send('Error on query');
     }
     res.json({
       ok: true,

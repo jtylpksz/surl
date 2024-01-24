@@ -1,6 +1,8 @@
 import express, { json } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
+import helmet from 'helmet';
+
 import { connection } from './db/connection';
 import { router as routes } from './routes/routes';
 
@@ -8,6 +10,7 @@ const app = express();
 const PORT = process.env.PORT ?? 5000;
 
 app.use(json());
+app.use(helmet());
 app.use(morgan('dev'));
 app.use(
   cors({
