@@ -35,7 +35,7 @@ export const shortURL = async (_prevState: any, formData: FormData) => {
     }
     throw new Error('HTTP Error');
   } else {
-    const id = randomBytes(8).toString('hex');
+    const id = randomBytes(6).toString('hex');
     const query = `
     INSERT INTO urls (id, url)
     VALUES ('${id}', '${normalURL}');
