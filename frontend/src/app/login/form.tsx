@@ -24,14 +24,14 @@ const LoginForm = () => {
   const form = useForm();
 
   const [broadcast, loginAction]: any = useFormState(login, {
+    ok: false,
     message: '',
-    success: false,
   });
 
   useEffect(() => {
-    if (broadcast.success && broadcast.message) {
+    if (broadcast.ok && broadcast.message) {
       toast.success(broadcast.message);
-    } else if (!broadcast.success && broadcast.message) {
+    } else if (!broadcast.ok && broadcast.message) {
       toast.error(broadcast.message);
     }
   }, [broadcast]);

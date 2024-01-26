@@ -24,14 +24,14 @@ const RegisterForm = () => {
   const form = useForm();
 
   const [broadcast, createAccountAction]: any = useFormState(createAccount, {
+    ok: false,
     message: '',
-    success: false,
   });
 
   useEffect(() => {
-    if (broadcast.success && broadcast.message) {
+    if (broadcast.ok && broadcast.message) {
       toast.success(broadcast.message);
-    } else if (!broadcast.success && broadcast.message) {
+    } else if (!broadcast.ok && broadcast.message) {
       toast.error(broadcast.message);
     }
   }, [broadcast]);
@@ -41,7 +41,10 @@ const RegisterForm = () => {
       <Card className="w-full max-w-sm p-5 mx-auto">
         <CardTitle className="text-3xl">Sign up</CardTitle>
         <Form {...form}>
-          <form action={createAccountAction} className="flex flex-col mt-3 gap-4">
+          <form
+            action={createAccountAction}
+            className="flex flex-col mt-3 gap-4"
+          >
             <FormField
               control={form.control}
               name="username"

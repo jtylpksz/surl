@@ -1,6 +1,6 @@
 export const db = async (url: string, options = {}): Promise<string | Array<Object>> => {
   try {
-    const request = await fetch(`http://localhost:5000/api/${url}`, options);
+    const request = await fetch(`http://localhost:5000/${url}`, options);
     if (request.ok) {
       const response = await request.json();
       return response;

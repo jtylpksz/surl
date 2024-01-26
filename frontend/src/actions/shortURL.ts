@@ -18,7 +18,7 @@ export const shortURL = async (_prevState: any, formData: FormData) => {
   };
 
   if (Boolean(process.env.LOCAL)) {
-    const shortURL: shortURLOutput | any = await db('addUrl', {
+    const shortURL: shortURLOutput | any = await db('api/addUrl', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
