@@ -1,5 +1,7 @@
 import { Github } from 'lucide-react';
 import { ModeToggle } from './mode-toggle';
+import { Button } from './ui/button';
+import Link from 'next/link';
 
 export function Nav() {
   return (
@@ -9,11 +11,18 @@ export function Nav() {
         target="_blank"
         rel="noopener noreferrer"
         title="Source code"
-        className='hover:opacity-70 transition'
+        className="hover:opacity-70 transition"
       >
         <Github />
       </a>
       <ModeToggle />
+      <Link href="/login">
+        <Button variant="secondary">Login</Button>
+      </Link>
+
+      <Link href="/signup">
+        <Button>Sign up</Button>
+      </Link>
     </nav>
   );
 }

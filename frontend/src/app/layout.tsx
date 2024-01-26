@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 import { ThemeProvider } from '@/components/theme-provider';
 import './styles/globals.css';
+import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
   title: 'sURL',
@@ -68,6 +69,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

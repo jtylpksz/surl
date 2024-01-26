@@ -21,6 +21,20 @@ router.get('/get/:id', (req, res) => {
       res.send('Error connecting to database');
     }
     res.send(results);
+
+    // Checking if expiration date is in the past
+    const selectQuery = `
+      DELETE FROM urls
+      WHERE expiration_date <= NOW();
+    `;
+
+    connection.query(selectQuery, (error, results) => {
+      if (error) {
+        console.error('Internal Error checking expiration date', error);
+      } else {
+        console.log(results);
+      }
+    });
   });
 });
 
@@ -36,16 +50,30 @@ router.get('/urls', (_req, res) => {
 });
 
 router.post('/addUrl', (req, res) => {
-  const { url } = req.body;
+  const { url }: { url: string } = req.body;
 
-  const id = randomBytes(16).toString('hex');
+  if (!url) {
+    res.send('URL malformed or undefined');
+  }
+
+  const id = randomBytes(6).toString('hex');
+
+  const currentDate = new Date();
+  const expirationDate = new Date(currentDate);
+  expirationDate.setDate(currentDate.getDate() + 60);
+  const formattedExpirationDate = expirationDate
+    .toISOString()
+    .slice(0, 19)
+    .replace('T', ' ');
+
   const query = `
-    INSERT INTO urls (id, url)
-    VALUES ('${id}', '${url}');
+    INSERT INTO urls (id, url, expiration_date)
+    VALUES ('${id}', '${url}', '${formattedExpirationDate}');
   `;
 
-  connection.query(query, (error) => {
+  connection.query(query, (error: any) => {
     if (error) {
+      console.error('Error /addUrl', error);
       res.send('Error on query');
     }
     res.json({

@@ -30,7 +30,8 @@ connection.connect((error) => {
   const query = `
     CREATE TABLE IF NOT EXISTS urls (
       id VARCHAR(255) NOT NULL PRIMARY KEY,
-      url VARCHAR(255) NOT NULL
+      url VARCHAR(255) NOT NULL,
+      expiration_date DATETIME NOT NULL
     );
   `;
 
