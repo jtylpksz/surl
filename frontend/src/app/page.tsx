@@ -1,6 +1,6 @@
 import { Footer } from '@/components/footer';
 import { ShortURLFormHomePage } from '@/components/shortURLFormRootpage/form';
-import { Nav } from '@/components/nav';
+import { Nav } from '@/components/Nav/nav';
 
 const Home = () => {
   return (

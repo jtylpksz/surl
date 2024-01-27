@@ -1,9 +1,17 @@
-import { Button } from '@/components/ui/button';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+
 import { Input } from '@/components/ui/input';
 import CreateLinkDialog from './CreateLinkDialog';
-import { Plus } from 'lucide-react';
 
-export default function Dashboard() {
+const Dashboard = () => {
+  const userId = cookies().get('userId')
+  const username = cookies().get('username');
+
+  if (!userId || !username) {
+    return redirect('/login');
+  }
+  
   return (
     <main className="p-8 mx-auto flex-col items-center gap-2 py-8 md:py-12 md:pb-8">
       <section className="flex justify-between items-center mb-8">
@@ -19,3 +27,5 @@ export default function Dashboard() {
     </main>
   );
 }
+
+export default Dashboard;

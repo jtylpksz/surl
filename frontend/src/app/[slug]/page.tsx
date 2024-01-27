@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
-import { db } from '../lib/localMySQL';
-import { db as dbProd } from '../lib/planetscaleClient';
+import { db } from '@/lib/localMySQL';
+import { db as dbProd } from '@/lib/planetscaleClient';
 
 interface OutputReq {
   id: string;
