@@ -1,31 +1,39 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { useFormState } from 'react-dom';
 import { useEffect } from 'react';
-import Link from 'next/link';
 
-import { createAccount } from '@/actions/signup';
-
+import { SubmitButton } from '@/components/submit-button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import {
   Form,
-  FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
   FormMessage,
+  FormDescription,
 } from '@/components/ui/form';
+import { Link, Plus } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Card, CardTitle } from '@/components/ui/card';
-import { SubmitButton } from '@/components/submit-button';
+import { useForm } from 'react-hook-form';
+import { createShortenedLink } from './actions/createShortenedLink';
 import { useToast } from '@/components/ui/use-toast';
+import { useFormState } from 'react-dom';
 
-const RegisterForm = () => {
+const CreateLinkDialog = () => {
   const form = useForm();
-  const { toast } = useToast();
+  const {toast} = useToast();
 
-  const [broadcast, createAccountAction]: any = useFormState(createAccount, {
+  const [broadcast, createLink]: any = useFormState(createShortenedLink, {
     ok: false,
     message: '',
   });
@@ -44,14 +52,17 @@ const RegisterForm = () => {
   }, [broadcast, toast]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4">
-      <Card className="w-full max-w-sm p-5 mx-auto">
-        <CardTitle className="text-3xl">Sign up</CardTitle>
+    <AlertDialog>
+      <AlertDialogTrigger className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+        <Plus /> Create new link
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Create new link</AlertDialogTitle>
+        </AlertDialogHeader>
+
         <Form {...form}>
-          <form
-            action={createAccountAction}
-            className="flex flex-col mt-3 gap-4"
-          >
+          <form action={createLink} className="flex flex-col mt-3 gap-4">
             <FormField
               control={form.control}
               name="username"
@@ -88,26 +99,21 @@ const RegisterForm = () => {
                       {...field}
                     />
                   </FormControl>
-
-                  <FormDescription>
-                    <Link href="/login" className="hover:underline">
-                      Do you have an account? Login here
-                    </Link>
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-            <SubmitButton
-              defaultValue="Create account"
-              valueInRequest="Creating account..."
-            />
+            <SubmitButton defaultValue="Create Link" valueInRequest="Creating Link..." />
           </form>
         </Form>
-      </Card>
-    </div>
+
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
 
-export default RegisterForm;
+export default CreateLinkDialog;

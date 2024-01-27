@@ -4,9 +4,9 @@ import { Label } from './ui/label';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { shortURL } from '@/actions/shortURL';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormState } from 'react-dom';
 import { useEffect, useState } from 'react';
-import { Wand2, Loader2 } from 'lucide-react';
+import { Wand2 } from 'lucide-react';
 import { SubmitButton } from './submit-button';
 
 export function SForm() {
@@ -16,7 +16,7 @@ export function SForm() {
   const [state, formAction]: any = useFormState(shortURL, {
     ok: true,
     urlShortened: '',
-    msg: '',
+    message: '',
   });
 
   useEffect(() => {

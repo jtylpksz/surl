@@ -18,19 +18,31 @@ routerAuth.post('/login', (req, res) => {
     res.send('Username or password malformed or undefined');
   }
 
-  const decryptedPassword = decrypt(password);
-
   const query = `
     SELECT * FROM users
-    WHERE username = '${username} AND password = '${decryptedPassword}';
+    WHERE username = '${username}';
   `;
 
-  connection.query(query, (error) => {
+  connection.query(query, (error, results: any) => {
     if (error) {
       console.error(error);
       res.send('Error connecting to database');
     }
-    res.send({ ok: true, userId: '' });
+
+    // get password from db, decrypt it and compare with the original password
+
+    const encryptedPassword = results[0].password;
+    const decryptedPassword = decrypt(encryptedPassword);
+
+    if (password !== decryptedPassword.message) {
+      return res.send({ ok: false, message: 'Wrong password' });
+    }
+
+    res.send({
+      ok: true,
+      username: results[0].username,
+      userId: results[0].user_id,
+    });
   });
 });
 
@@ -53,11 +65,16 @@ routerAuth.post('/signup', (req, res) => {
     VALUES ('${username}', '${encryptedPassword}', '${userId}');
   `;
 
-  connection.query(query, (error) => {
+  connection.query(query, (error: any) => {
+    if (error.code === 'ER_DUP_ENTRY') {
+      return res.send({ ok: false, message: 'Username already exists' });
+    }
+
     if (error) {
       console.error(error);
-      res.send('Error connecting to database');
+      return res.send('Error connecting to database');
     }
-    res.send({ ok: true, userId });
+
+    res.send({ ok: true, username, userId });
   });
 });

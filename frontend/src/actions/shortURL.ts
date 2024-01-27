@@ -4,12 +4,19 @@ import { db } from '@/app/lib/localMySQL';
 import { db as dbProd } from '@/app/lib/planetscaleClient';
 import { randomBytes } from 'node:crypto';
 
-type shortURLOutput = {
+interface shortURLOutput {
   ok: boolean;
   urlShortened: string;
-  msg: string;
+  message: string;
 };
 
+/**
+ * Function for shortening a URL using a specified method.
+ *
+ * @param {any} _prevState - the previous state (not used in this function)
+ * @param {FormData} formData - the form data containing the normal URL
+ * @return {Promise<shortURLOutput>} an object with the shortened URL information
+ */
 export const shortURL = async (_prevState: any, formData: FormData) => {
   const normalURL = formData.get('normalURL');
 
@@ -30,7 +37,7 @@ export const shortURL = async (_prevState: any, formData: FormData) => {
       return {
         ok: shortURL.ok,
         urlShortened: shortURL.urlShortened,
-        msg: shortURL.msg,
+        message: shortURL.msg,
       };
     }
     throw new Error('HTTP Error');
@@ -50,7 +57,7 @@ export const shortURL = async (_prevState: any, formData: FormData) => {
       return {
         ok: true,
         urlShortened: `https://surlm.vercel.app/${getAll.rows[0].id}`,
-        msg: 'URL Shortened successfully',
+        message: 'URL Shortened successfully',
       };
     } catch (error) {
       throw new Error('Something went wrong!');

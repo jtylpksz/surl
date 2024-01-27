@@ -1,5 +1,12 @@
 'use client';
 
+import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { useFormState } from 'react-dom';
+import Link from 'next/link';
+
+import { login } from '@/actions/login';
+
 import {
   Form,
   FormControl,
@@ -12,16 +19,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardTitle } from '@/components/ui/card';
 import { SubmitButton } from '@/components/submit-button';
-
-import Link from 'next/link';
-import { useForm } from 'react-hook-form';
-import { useEffect } from 'react';
-import { toast } from 'sonner';
-import { useFormState } from 'react-dom';
-import { login } from '@/actions/login';
+import { useToast } from '@/components/ui/use-toast';
 
 const LoginForm = () => {
   const form = useForm();
+  const { toast } = useToast();
 
   const [broadcast, loginAction]: any = useFormState(login, {
     ok: false,
@@ -30,11 +32,16 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (broadcast.ok && broadcast.message) {
-      toast.success(broadcast.message);
+      toast({
+        title: broadcast.message,
+      });
     } else if (!broadcast.ok && broadcast.message) {
-      toast.error(broadcast.message);
+      toast({
+        title: 'Something went wrong',
+        description: broadcast.message,
+      });
     }
-  }, [broadcast]);
+  }, [broadcast, toast]);
 
   return (
     <div className="flex items-center justify-center min-h-screen p-4">

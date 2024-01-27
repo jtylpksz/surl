@@ -1,4 +1,11 @@
-export const db = async (url: string, options = {}): Promise<string | Array<Object>> => {
+interface responseData {
+  ok: boolean;
+  message: string;
+  userId: string;
+  username: string;
+}
+
+export const db = async (url: string, options = {}): Promise<responseData> => {
   try {
     const request = await fetch(`http://localhost:5000/${url}`, options);
     if (request.ok) {

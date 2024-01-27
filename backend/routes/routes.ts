@@ -79,7 +79,7 @@ router.post('/addUrl', (req, res) => {
     res.json({
       ok: true,
       urlShortened: `http://localhost:3000/${id}`,
-      msg: 'Short URL Added',
+      message: 'Short URL Added',
     });
   });
 });
