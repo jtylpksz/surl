@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 
 import { ThemeProvider } from '@/components/theme-provider';
-import './styles/globals.css';
 import { Toaster } from '@/components/ui/toaster';
+
+import '@/styles/globals.css';
 
 export const metadata: Metadata = {
   title: 'sURL',
@@ -53,11 +54,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
@@ -74,4 +71,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

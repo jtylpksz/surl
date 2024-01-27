@@ -5,7 +5,7 @@ import { useFormState } from 'react-dom';
 import { useEffect } from 'react';
 import Link from 'next/link';
 
-import { createAccount } from '@/actions/signup';
+import { createAccount } from './actions/signup';
 
 import {
   Form,

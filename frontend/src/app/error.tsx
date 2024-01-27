@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 
 const Error = ({
   error,
+  reset,
 }: {
   error: (Error & { digest?: string }) | any;
   reset: () => void;
@@ -21,7 +22,7 @@ const Error = ({
         </h1>
         <p>Did you try to reload the page?</p>
 
-        <Button onClick={() => window.location.reload()}>Reload</Button>
+        <Button onClick={() => reset()}>Reload</Button>
       </header>
     </main>
   );

@@ -1,18 +1,20 @@
 'use client';
 
-import { Label } from './ui/label';
-import { Input } from './ui/input';
-import { Button } from './ui/button';
-import { shortURL } from '@/actions/shortURL';
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
 import { useFormState } from 'react-dom';
 import { useEffect, useState } from 'react';
-import { Wand2 } from 'lucide-react';
-import { SubmitButton } from './submit-button';
 
-export function SForm() {
+import { shortURL } from './actions/shortURL';
+import { Wand2 } from 'lucide-react';
+import { SubmitButton } from '../submit-button';
+
+export const ShortURLFormHomePage = () => {
   const [shortenedURLState, setShortenedURLState] = useState('');
   const [copyToClipboardText, setCopyToClipboardText] =
     useState('Copy to clipboard');
+
   const [state, formAction]: any = useFormState(shortURL, {
     ok: true,
     urlShortened: '',
@@ -65,11 +67,14 @@ export function SForm() {
         </Button>
       ) : null}
 
-      <SubmitButton defaultValue='Shorten URL' valueInRequest='Shortening URL...' />
-      <small className='max-w-80 opacity-70'>
+      <SubmitButton
+        defaultValue="Shorten URL"
+        valueInRequest="Shortening URL..."
+      />
+      <small className="max-w-80 opacity-70">
         The shortened URL has a duration of 30 days. But if you have an account
         , the URL will be valid for 60 days (30 days more).
       </small>
     </form>
   );
-}
+};

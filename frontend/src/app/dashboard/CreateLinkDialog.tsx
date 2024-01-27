@@ -1,14 +1,13 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useFormState } from 'react-dom';
+import { useForm } from 'react-hook-form';
 
-import { SubmitButton } from '@/components/submit-button';
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
@@ -20,18 +19,16 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-  FormDescription,
 } from '@/components/ui/form';
-import { Link, Plus } from 'lucide-react';
+import { Plus, Wand2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { useForm } from 'react-hook-form';
+import { SubmitButton } from '@/components/submit-button';
 import { createShortenedLink } from './actions/createShortenedLink';
 import { useToast } from '@/components/ui/use-toast';
-import { useFormState } from 'react-dom';
 
 const CreateLinkDialog = () => {
   const form = useForm();
-  const {toast} = useToast();
+  const { toast } = useToast();
 
   const [broadcast, createLink]: any = useFormState(createShortenedLink, {
     ok: false,
@@ -68,14 +65,13 @@ const CreateLinkDialog = () => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Your long URL</FormLabel>
                   <FormControl>
                     <Input
-                      type="text"
+                      type="url"
                       autoComplete="off"
                       autoFocus
-                      placeholder="Enter your username"
-                      data-cy="username"
+                      placeholder="Paste your long URL here"
                       {...field}
                     />
                   </FormControl>
@@ -89,13 +85,15 @@ const CreateLinkDialog = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className="flex items-center gap-2">
+                    <Wand2 width={20} height={20} className="opacity-70" /> sURL
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      type="password"
+                      type="url"
                       autoComplete="off"
-                      placeholder="Enter your password"
-                      data-cy="password"
+                      placeholder="Your shortened URL will be placed here"
+                      disabled
                       {...field}
                     />
                   </FormControl>
@@ -103,14 +101,16 @@ const CreateLinkDialog = () => {
                 </FormItem>
               )}
             />
-            <SubmitButton defaultValue="Create Link" valueInRequest="Creating Link..." />
+            <div className="flex items-center justify-end gap-2">
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <SubmitButton
+                defaultValue="Create Link"
+                valueInRequest="Creating Link..."
+                className="w-inherit mt-2"
+              />
+            </div>
           </form>
         </Form>
-
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Continue</AlertDialogAction>
-        </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );

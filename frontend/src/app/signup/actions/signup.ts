@@ -1,23 +1,20 @@
 'use server';
 
-import { db } from '@/app/lib/localMySQL';
+import { db } from '@/lib/localMySQL';
 import { sendErrorToClient } from '@/utils/sendErrorToClient';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-/**
- * Performs a login operation using the provided form data.
- *
- * @param {any} _prevState - the previous state (unused)
- * @param {FormData} formData - the form data containing username and password
- * @return {void} no return value
- */
-export const login = async (_prevState: any, formData: FormData) => {
-  const username = formData.get('username');
-  const password = formData.get('password');
+export const createAccount = async (_prevState: any, formData: FormData) => {
+  const username = formData.get('username') as string;
+  const password = formData.get('password') as string;
 
   if (!username || !password) {
     return sendErrorToClient('Username and password are required.');
+  }
+
+  if (password.length < 8) {
+    return sendErrorToClient('Password must be at least 8 characters long.');
   }
 
   if (Boolean(process.env.LOCAL)) {
@@ -26,7 +23,7 @@ export const login = async (_prevState: any, formData: FormData) => {
       password,
     };
 
-    const authWithCredentials = await db('auth/login', {
+    const authWithCredentials = await db('auth/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -38,11 +35,16 @@ export const login = async (_prevState: any, formData: FormData) => {
     if (authWithCredentials.ok) {
       cookies().set('userId', authWithCredentials.userId);
       cookies().set('username', authWithCredentials.username);
-
       redirect('/dashboard');
-    } else {
-      return sendErrorToClient('Invalid credentials.');
     }
+
+    if (authWithCredentials.message === 'Username already exists') {
+      return sendErrorToClient(
+        'Username already exists. Please try with a different username.'
+      );
+    }
+
+    return sendErrorToClient('Error creating account. Please try again later.');
   }
   return;
 };

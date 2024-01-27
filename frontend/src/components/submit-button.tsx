@@ -8,15 +8,18 @@ import { Button } from './ui/button';
 export const SubmitButton = ({
   defaultValue,
   valueInRequest,
+  className = 'w-full mt-2',
 }: {
   defaultValue?: string;
   valueInRequest?: string;
+  className?: string;
 }) => {
   const { pending } = useFormStatus();
+
   return (
     <Button
       type="submit"
-      className="w-full mt-2"
+      className={className}
       aria-busy={pending}
       disabled={pending}
       data-cy="submit-button"

@@ -1,7 +1,8 @@
+import Link from 'next/link';
+
 import { Github } from 'lucide-react';
 import { ModeToggle } from './mode-toggle';
 import { Button } from './ui/button';
-import Link from 'next/link';
 
 export function Nav() {
   return (

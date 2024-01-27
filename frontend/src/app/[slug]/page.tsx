@@ -2,10 +2,10 @@ import { redirect } from 'next/navigation';
 import { db } from '../lib/localMySQL';
 import { db as dbProd } from '../lib/planetscaleClient';
 
-type OutputReq = {
+interface OutputReq {
   id: string;
   url: string;
-};
+}
 
 const getWebsiteURL = async (id: string) => {
   if (Boolean(process.env.LOCAL)) {
@@ -33,10 +33,12 @@ const getWebsiteURL = async (id: string) => {
   }
 };
 
-export default async function Page({ params }: { params: { slug: string } }) {
+const RedirectToPage = async ({ params }: { params: { slug: string } }) => {
   const fullWebsiteURL = await getWebsiteURL(params.slug);
   if (fullWebsiteURL.notFound) {
     return <h1>{fullWebsiteURL.message}</h1>;
   }
   return redirect(fullWebsiteURL);
-}
+};
+
+export default RedirectToPage;
