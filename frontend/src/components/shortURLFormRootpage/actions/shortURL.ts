@@ -24,6 +24,7 @@ export const shortURL = async (_prevState: any, formData: FormData) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
+      cache: 'no-store',
     });
 
     if (shortURL) {

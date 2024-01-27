@@ -4,10 +4,10 @@ import { cookies } from 'next/headers';
 import { Github } from 'lucide-react';
 import { ModeToggle } from '../mode-toggle';
 import { Button } from '../ui/button';
-import {LogoutButton} from './logoutButton';
+import { LogoutButton } from './logoutButton';
 
 export const Nav = () => {
-  const userId = cookies().get('userId')
+  const userId = cookies().get('userId');
   const username = cookies().get('username');
 
   return (
@@ -32,10 +32,9 @@ export const Nav = () => {
 
           <Link href="/signup">
             <Button>Sign up</Button>
-          </Link> 
+          </Link>
         </>
       )}
-      
     </nav>
   );
-}
+};

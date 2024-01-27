@@ -97,6 +97,7 @@ router.get('/urlsByUser/:userId', (req, res) => {
 
   connection.query(query, (error, results) => {
     if (error) {
+      console.error(error);
       res.send('Error connecting to database');
     }
     res.send(results);

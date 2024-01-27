@@ -62,7 +62,7 @@ const CreateLinkDialog = () => {
           <form action={createLink} className="flex flex-col mt-3 gap-4">
             <FormField
               control={form.control}
-              name="username"
+              name="normalURL"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Your long URL</FormLabel>
@@ -82,7 +82,7 @@ const CreateLinkDialog = () => {
 
             <FormField
               control={form.control}
-              name="password"
+              name="shortenedURL"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="flex items-center gap-2">
