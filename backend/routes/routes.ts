@@ -50,7 +50,7 @@ router.get('/urls', (_req, res) => {
 });
 
 router.post('/addUrl', (req, res) => {
-  const { url }: { url: string } = req.body;
+  const { url, userId }: { url: string; userId: string } = req.body;
 
   if (!url) {
     res.send('URL malformed or undefined');
@@ -67,8 +67,8 @@ router.post('/addUrl', (req, res) => {
     .replace('T', ' ');
 
   const query = `
-    INSERT INTO urls (id, url, expiration_date)
-    VALUES ('${id}', '${url}', '${formattedExpirationDate}');
+    INSERT INTO urls (id, url, expiration_date, user_id)
+    VALUES ('${id}', '${url}', '${formattedExpirationDate}', '${userId}');
   `;
 
   connection.query(query, (error: any) => {
@@ -81,5 +81,24 @@ router.post('/addUrl', (req, res) => {
       urlShortened: `http://localhost:3000/${id}`,
       message: 'Short URL Added',
     });
+  });
+});
+
+router.get('/urlsByUser/:userId', (req, res) => {
+  // Join between urls and users table
+
+  const { userId } = req.params;
+
+  const query = `
+    SELECT * FROM urls
+    INNER JOIN users ON urls.user_id = users.user_id
+    WHERE user_id = '${userId}';
+  `;
+
+  connection.query(query, (error, results) => {
+    if (error) {
+      res.send('Error connecting to database');
+    }
+    res.send(results);
   });
 });
