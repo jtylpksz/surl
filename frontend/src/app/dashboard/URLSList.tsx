@@ -86,7 +86,7 @@ export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
             href={
               typeof window !== 'undefined'
                 ? `${window.location.origin}/${url.id}`
-                : `https://surlm.vercel.app/${url.id}`
+                : `http://localhost:3000/${url.id}`
             }
             key={url.id}
             target="_blank"
