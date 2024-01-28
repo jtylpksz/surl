@@ -47,6 +47,7 @@ export const ShortURLFormHomePage = () => {
           placeholder="Your shortened URL will be placed here"
           className="mt-2"
           disabled={shortenedURLState !== '' ? false : true}
+          id="shortened-url"
         />
       </Label>
 
