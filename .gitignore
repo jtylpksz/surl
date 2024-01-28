@@ -1,6 +1,10 @@
 frontend/node_modules
 frontend/.next
 frontend/*.local
-
+frontend/playwright-report/
+frontend/blob-report/
+frontend/playwright/.cache/
+frontend/test-results
+frontend/tests-examples
 backend/node_modules
 backend/*.local

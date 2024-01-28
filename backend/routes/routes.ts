@@ -103,7 +103,25 @@ router.post('/urlsByUser', (req, res) => {
       console.error(error);
       res.send('Error connecting to database');
     }
-    console.log(results);
+
     res.send(results);
   });
 });
+
+router.delete('/deleteUrlByUser', (req, res) => {
+  const { id } = req.body;
+
+  const query = `
+    DELETE FROM urls
+    WHERE id = ?;
+  `;
+
+  connection.query(query, [id], (error) => {
+    if (error) {
+      console.error(error);
+      res.send('Error connecting to database');
+    }
+
+    res.send({ ok: true, message: 'URL deleted' });
+  })
+})

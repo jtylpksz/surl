@@ -9,8 +9,22 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+
+import {
+  DropdownMenu,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+} from '@/components/ui/dropdown-menu';
+
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { MoreVertical } from 'lucide-react';
+
+import { useToast } from '@/components/ui/use-toast';
+
 import Link from 'next/link';
+import { db } from '@/lib/localMySQL';
 
 import { URLSListProps } from './types/types';
 
@@ -18,6 +32,8 @@ export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
   const [urlList, setUrlList] = useState<URLSListProps[]>(urls);
   const linkNameRef: Ref<HTMLInputElement> | any =
     useRef<HTMLInputElement>(null);
+
+  const { toast } = useToast();
 
   const filterUrlList = () => {
     if (linkNameRef.current) {
@@ -27,6 +43,31 @@ export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
 
       setUrlList(filteredList);
     }
+  };
+
+  const deleteUrl = async (event: any) => {
+    const id = event.target.id;
+
+    const filteredList = urlList.filter((url) => url.id !== id);
+    setUrlList(filteredList);
+
+    const deleteShortenedURLOnDatabase = await db('api/deleteUrlByUser', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id }),
+    });
+
+    if (deleteShortenedURLOnDatabase.ok) {
+      return toast({
+        title: 'URL deleted successfully!',
+      });
+    }
+    return toast({
+      title: 'Something went wrong while deleting the URL',
+      description: 'Please try again later.',
+    })
   };
 
   return (
@@ -48,8 +89,25 @@ export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
             rel="noopener noreferrer"
           >
             <Card>
-              <CardHeader>
+              <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>{url.id}</CardTitle>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      data-cy="options-button"
+                    >
+                      <MoreVertical />
+                      <span className="sr-only">Options</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem id={url.id} onClick={deleteUrl}>
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </CardHeader>
 
               <CardContent>
