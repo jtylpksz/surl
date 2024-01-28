@@ -11,6 +11,13 @@ interface authData {
   password: string;
 }
 
+interface resultsData {
+  ok: boolean;
+  username: string;
+  password: string;
+  userId: string;
+}
+
 routerAuth.post('/login', (req, res) => {
   const { username, password }: authData = req.body;
 
@@ -20,10 +27,10 @@ routerAuth.post('/login', (req, res) => {
 
   const query = `
     SELECT * FROM users
-    WHERE username = '${username}';
+    WHERE username = ?;
   `;
 
-  connection.query(query, (error, results: any) => {
+  connection.query(query, [username], (error, results: resultsData[] | any) => {
     if (error) {
       console.error(error);
       res.send('Error connecting to database');
@@ -62,10 +69,12 @@ routerAuth.post('/signup', (req, res) => {
   const encryptedPassword = encrypt(password);
   const query = `
     INSERT INTO users (username, password, user_id)
-    VALUES ('${username}', '${encryptedPassword}', '${userId}');
+    VALUES (?, ?, ?);
   `;
 
-  connection.query(query, (error: any) => {
+  const values = [username, encryptedPassword, userId];
+
+  connection.query(query, values, (error: any) => {
     if (error.code === 'ER_DUP_ENTRY') {
       return res.send({ ok: false, message: 'Username already exists' });
     }

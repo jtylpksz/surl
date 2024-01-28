@@ -13,10 +13,10 @@ router.get('/get/:id', (req, res) => {
 
   const query = `
     SELECT * FROM urls
-    WHERE id = '${id}';
+    WHERE id = ?;
   `;
 
-  connection.query(query, (error, results) => {
+  connection.query(query, [id], (error, results) => {
     if (error) {
       res.send('Error connecting to database');
     }
@@ -68,10 +68,12 @@ router.post('/addUrl', (req, res) => {
 
   const query = `
     INSERT INTO urls (id, url, expiration_date, user_id)
-    VALUES ('${id}', '${url}', '${formattedExpirationDate}', '${userId}');
+    VALUES (?, ?, ?, ?);
   `;
 
-  connection.query(query, (error: any) => {
+  const values = [id, url, formattedExpirationDate, userId];
+
+  connection.query(query, values, (error: any) => {
     if (error) {
       console.error('Error /addUrl', error);
       res.send('Error on query');
@@ -84,22 +86,24 @@ router.post('/addUrl', (req, res) => {
   });
 });
 
-router.get('/urlsByUser/:userId', (req, res) => {
+router.post('/urlsByUser', (req, res) => {
   // Join between urls and users table
 
-  const { userId } = req.params;
+  const { userId } = req.body;
 
   const query = `
-    SELECT * FROM urls
+    SELECT urls.id, urls.url, urls.expiration_date, urls.user_id
+    FROM urls
     INNER JOIN users ON urls.user_id = users.user_id
-    WHERE user_id = '${userId}';
+    WHERE users.user_id = ?;
   `;
 
-  connection.query(query, (error, results) => {
+  connection.query(query, [userId], (error, results) => {
     if (error) {
       console.error(error);
       res.send('Error connecting to database');
     }
+    console.log(results);
     res.send(results);
   });
 });
