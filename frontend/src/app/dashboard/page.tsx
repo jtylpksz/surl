@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { db } from '@/lib/localMySQL';
-import { Input } from '@/components/ui/input';
+import { URLSList } from './URLSList';
 import CreateLinkDialog from './CreateLinkDialog';
 
 const getShortenedURLsList = async () => {
@@ -33,7 +33,6 @@ const Dashboard = async () => {
   }
 
   const shortenedURLsList = await getShortenedURLsList();
-  console.log(shortenedURLsList);
 
   return (
     <main className="p-8 mx-auto flex-col items-center gap-2 py-8 md:py-12 md:pb-8">
@@ -42,11 +41,7 @@ const Dashboard = async () => {
         <CreateLinkDialog />
       </section>
 
-      <section>
-        <Input type="url" placeholder="Search links" />
-      </section>
-
-      <section></section>
+      <URLSList urls={shortenedURLsList} />
     </main>
   );
 };
