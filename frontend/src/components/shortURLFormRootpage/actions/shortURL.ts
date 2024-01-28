@@ -34,20 +34,21 @@ export const shortURL = async (_prevState: any, formData: FormData) => {
         message: shortURL.msg,
       };
     }
+    console.error(shortURL);
     throw new Error('HTTP Error');
   }
 
   const id = randomBytes(6).toString('hex');
   const query = `
     INSERT INTO urls (id, url)
-    VALUES ('${id}', '${normalURL}');
+    VALUES (?, ?);
   `;
 
   try {
-    await dbProd.execute(query);
-    const getAll = await dbProd.execute(
-      `SELECT * FROM urls WHERE url = '${normalURL}';`
-    );
+    await dbProd.execute(query, [id, normalURL]);
+    const getAll = await dbProd.execute('SELECT * FROM urls WHERE url = ?;', [
+      normalURL,
+    ]);
 
     return {
       ok: true,
@@ -55,6 +56,7 @@ export const shortURL = async (_prevState: any, formData: FormData) => {
       message: 'URL Shortened successfully',
     };
   } catch (error) {
+    console.error(error);
     throw new Error('Something went wrong!');
   }
 };

@@ -1,9 +1,13 @@
 'use server';
 
-import { db } from '@/lib/localMySQL';
-import { sendErrorToClient } from '@/utils/sendErrorToClient';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+
+import { db } from '@/lib/localMySQL';
+import { db as dbProd } from '@/lib/planetscaleClient';
+
+import { decrypt } from '@/utils/security/decrypt';
+import { sendErrorToClient } from '@/utils/sendErrorToClient';
 
 export const login = async (_prevState: any, formData: FormData) => {
   const username = formData.get('username');
@@ -37,5 +41,32 @@ export const login = async (_prevState: any, formData: FormData) => {
       return sendErrorToClient('Invalid credentials.');
     }
   }
-  return;
+
+  const query = `
+    SELECT * FROM users
+    WHERE username = ?;
+  `;
+
+  try {
+    const results: any = await dbProd.execute(query, [username]);
+
+    if (results) {
+      // get password from db, decrypt it and compare with the original password
+
+      const encryptedPassword = results[0].password;
+      const decryptedPassword = decrypt(encryptedPassword);
+
+      if (password !== decryptedPassword.message) {
+        return sendErrorToClient('Invalid credentials.');
+      }
+
+      return {
+        ok: true,
+        username: results[0].username,
+        userId: results[0].user_id,
+      };
+    }
+  } catch (error) {
+    return sendErrorToClient('Error connecting to database');
+  }
 };

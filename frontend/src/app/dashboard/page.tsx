@@ -2,6 +2,8 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { db } from '@/lib/localMySQL';
+import { db as dbProd } from '@/lib/planetscaleClient';
+
 import { URLSList } from './URLSList';
 import CreateLinkDialog from './CreateLinkDialog';
 
@@ -18,6 +20,22 @@ const getShortenedURLsList = async () => {
     });
 
     return shortenedURLs;
+  }
+
+  const query = `
+    SELECT urls.id, urls.url, urls.expiration_date, urls.user_id
+    FROM urls
+    INNER JOIN users ON urls.user_id = users.user_id
+    WHERE users.user_id = ?;
+  `;
+
+  try {
+    const shortenedURLs = await dbProd.execute(query, [userId]);
+
+    return shortenedURLs;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Something went wrong!');
   }
 };
 

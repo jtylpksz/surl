@@ -2,6 +2,10 @@
 
 import { Ref, useRef, useState } from 'react';
 
+import Link from 'next/link';
+import { db } from '@/lib/localMySQL';
+import { db as dbProd } from '@/lib/planetscaleClient';
+
 import {
   Card,
   CardContent,
@@ -22,9 +26,6 @@ import { Button } from '@/components/ui/button';
 import { MoreVertical } from 'lucide-react';
 
 import { useToast } from '@/components/ui/use-toast';
-
-import Link from 'next/link';
-import { db } from '@/lib/localMySQL';
 
 import { URLSListProps } from './types/types';
 
@@ -51,23 +52,46 @@ export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
     const filteredList = urlList.filter((url) => url.id !== id);
     setUrlList(filteredList);
 
-    const deleteShortenedURLOnDatabase = await db('api/deleteUrlByUser', {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id }),
-    });
+    if (Boolean(process.env.LOCAL)) {
+      const deleteShortenedURLOnDatabase = await db('api/deleteUrlByUser', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id }),
+      });
 
-    if (deleteShortenedURLOnDatabase.ok) {
+      if (deleteShortenedURLOnDatabase.ok) {
+        return toast({
+          title: 'URL deleted successfully!',
+        });
+      }
       return toast({
-        title: 'URL deleted successfully!',
+        title: 'Something went wrong while deleting the URL',
+        description: 'Please try again later.',
       });
     }
-    return toast({
-      title: 'Something went wrong while deleting the URL',
-      description: 'Please try again later.',
-    });
+
+    const query = `
+      DELETE FROM urls
+      WHERE id = ?;
+    `
+
+    try {
+      const deleteShortenedURLOnDatabase = await dbProd.execute(query, [id]);
+
+      if (deleteShortenedURLOnDatabase) {
+        return toast({
+          title: 'URL deleted successfully!',
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      return toast({
+        title: 'Something went wrong while deleting the URL',
+        description: 'Please try again later.',
+      });
+    }
   };
 
   return (

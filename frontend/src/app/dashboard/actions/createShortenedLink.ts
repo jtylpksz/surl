@@ -2,8 +2,8 @@
 
 import { db } from '@/lib/localMySQL';
 import { db as dbProd } from '@/lib/planetscaleClient';
+import { sendErrorToClient } from '@/utils/sendErrorToClient';
 
-import { revalidatePath, revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 import { randomBytes } from 'node:crypto';
 
@@ -46,14 +46,14 @@ export const createShortenedLink = async (
   const id = randomBytes(6).toString('hex');
   const query = `
     INSERT INTO urls (id, url)
-    VALUES ('${id}', '${normalURL}');
+    VALUES (?, ?);
   `;
 
   try {
-    await dbProd.execute(query);
-    const getAll = await dbProd.execute(
-      `SELECT * FROM urls WHERE url = '${normalURL}';`
-    );
+    await dbProd.execute(query, [id, normalURL]);
+    const getAll = await dbProd.execute('SELECT * FROM urls WHERE url = ?;', [
+      normalURL,
+    ]);
 
     return {
       ok: true,
@@ -61,6 +61,6 @@ export const createShortenedLink = async (
       message: 'URL Shortened successfully',
     };
   } catch (error) {
-    throw new Error('Something went wrong!');
+    return sendErrorToClient('Something went wrong!');
   }
 };
