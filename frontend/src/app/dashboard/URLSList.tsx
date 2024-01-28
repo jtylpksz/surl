@@ -67,7 +67,7 @@ export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
     return toast({
       title: 'Something went wrong while deleting the URL',
       description: 'Please try again later.',
-    })
+    });
   };
 
   return (
@@ -88,16 +88,12 @@ export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Card>
+            <Card id="card-url-shortened">
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>{url.id}</CardTitle>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      data-cy="options-button"
-                    >
+                    <Button variant="outline" size="icon" id="options-button">
                       <MoreVertical />
                       <span className="sr-only">Options</span>
                     </Button>

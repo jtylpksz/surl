@@ -75,7 +75,7 @@ routerAuth.post('/signup', (req, res) => {
   const values = [username, encryptedPassword, userId];
 
   connection.query(query, values, (error: any) => {
-    if (error.code === 'ER_DUP_ENTRY') {
+    if (error && error.code === 'ER_DUP_ENTRY') {
       return res.send({ ok: false, message: 'Username already exists' });
     }
 

@@ -2,7 +2,9 @@
 
 import { db } from '@/lib/localMySQL';
 import { db as dbProd } from '@/lib/planetscaleClient';
-import {cookies} from 'next/headers';
+
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { cookies } from 'next/headers';
 import { randomBytes } from 'node:crypto';
 
 interface shortURLOutput {
@@ -11,7 +13,10 @@ interface shortURLOutput {
   message: string;
 }
 
-export const createShortenedLink = async (_prevState: any, formData: FormData) => {
+export const createShortenedLink = async (
+  _prevState: any,
+  formData: FormData
+) => {
   const normalURL = formData.get('normalURL');
 
   const data = {
