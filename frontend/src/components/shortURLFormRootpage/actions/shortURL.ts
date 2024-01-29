@@ -39,13 +39,22 @@ export const shortURL = async (_prevState: any, formData: FormData) => {
   }
 
   const id = randomBytes(6).toString('hex');
+
+  const currentDate = new Date();
+  const expirationDate = new Date(currentDate);
+  expirationDate.setDate(currentDate.getDate() + 30);
+  const formattedExpirationDate = expirationDate
+    .toISOString()
+    .slice(0, 19)
+    .replace('T', ' ');
+
   const query = `
-    INSERT INTO urls (id, url)
-    VALUES (?, ?);
+    INSERT INTO urls (id, url, expiration_date, user_id)
+    VALUES (?, ?, ?, ?);
   `;
 
   try {
-    await dbProd.execute(query, [id, normalURL]);
+    await dbProd.execute(query, [id, normalURL, formattedExpirationDate, null]);
     const getAll = await dbProd.execute('SELECT * FROM urls WHERE url = ?;', [
       normalURL,
     ]);
