@@ -22,27 +22,6 @@ export const createAccount = async (_prevState: any, formData: FormData) => {
     return sendErrorToClient('Password must be at least 8 characters long.');
   }
 
-const query1 = `
-    CREATE TABLE IF NOT EXISTS urls (
-      id VARCHAR(255) NOT NULL PRIMARY KEY,
-      url VARCHAR(255) NOT NULL,
-      expiration_date DATETIME NOT NULL,
-      user_id VARCHAR(255)
-    );
-  `;
-  
-  const query2 = `
-    CREATE TABLE IF NOT EXISTS users (
-      id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-      username VARCHAR(255) NOT NULL UNIQUE,
-      password VARCHAR(255) NOT NULL,
-      user_id VARCHAR(255)
-    );
-  `;
-  await dbProd.execute("DROP TABLE IF EXISTS urls;");
-await dbProd.execute(query1);
-await dbProd.execute(query2);
-
   if (Boolean(process.env.LOCAL)) {
     const credentials = {
       username,
