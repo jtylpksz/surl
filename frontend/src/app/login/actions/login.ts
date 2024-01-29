@@ -17,7 +17,7 @@ export const login = async (_prevState: any, formData: FormData) => {
     return sendErrorToClient('Username and password are required.');
   }
 
-  if (process.env.LOCAL === 'true') {
+  if (process.env.NEXT_PUBLIC_DATABASE_LOCAL === 'true') {
     const credentials = {
       username,
       password,

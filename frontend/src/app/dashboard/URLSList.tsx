@@ -52,7 +52,7 @@ export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
     const filteredList = urlList.filter((url) => url.id !== id);
     setUrlList(filteredList);
 
-    if (Boolean(process.env.LOCAL)) {
+    if (process.env.NEXT_PUBLIC_DATABASE_LOCAL === 'true') {
       const deleteShortenedURLOnDatabase = await db('api/deleteUrlByUser', {
         method: 'DELETE',
         headers: {
@@ -132,7 +132,7 @@ export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
 
               <CardContent>
                 <CardDescription className="flex flex-col">
-                  <span>{url.url}</span>
+                  <span className='truncate'>{url.url}</span>
                   <span>Expires on {url.expiration_date.slice(0, 10)}</span>
                 </CardDescription>
               </CardContent>

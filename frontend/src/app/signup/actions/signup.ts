@@ -22,7 +22,7 @@ export const createAccount = async (_prevState: any, formData: FormData) => {
     return sendErrorToClient('Password must be at least 8 characters long.');
   }
 
-  if (process.env.LOCAL === 'true') {
+  if (process.env.NEXT_PUBLIC_DATABASE_LOCAL === 'true') {
     const credentials = {
       username,
       password,
