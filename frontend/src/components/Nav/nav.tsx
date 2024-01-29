@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import { Github } from 'lucide-react';
 import { ModeToggle } from '../mode-toggle';
 import { Button } from '../ui/button';
-import { LogoutButton } from './logoutButton';
+import { GoToDashboardButton } from './goToDashboardButton';
 
 export const Nav = () => {
   const userId = cookies().get('userId');
@@ -23,7 +23,7 @@ export const Nav = () => {
       </a>
       <ModeToggle />
       {userId && username ? (
-        <LogoutButton />
+        <GoToDashboardButton />
       ) : (
         <>
           <Link href="/login">
