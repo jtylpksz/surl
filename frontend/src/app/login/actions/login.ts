@@ -65,7 +65,7 @@ export const login = async (_prevState: any, formData: FormData) => {
     }
   } catch (error) {
     console.error(error);
-    return sendErrorToClient('Error connecting to database');
+    return sendErrorToClient('Something went wrong. Is this user registered?');
   }
 
   redirect('/dashboard');
