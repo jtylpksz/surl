@@ -107,11 +107,7 @@ export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 mt-4">
         {urlList.map((url: URLSListProps) => (
           <Link
-            href={
-              typeof window !== 'undefined'
-                ? `${window.location.origin}/${url.id}`
-                : `http://localhost:3000/${url.id}`
-            }
+            href={`https://surlm.vercel.app/${url.id}`}
             key={url.id}
             target="_blank"
             rel="noopener noreferrer"
