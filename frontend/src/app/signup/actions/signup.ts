@@ -22,7 +22,7 @@ export const createAccount = async (_prevState: any, formData: FormData) => {
     return sendErrorToClient('Password must be at least 8 characters long.');
   }
 
-  if (Boolean(process.env.LOCAL)) {
+  if (process.env.LOCAL === 'true') {
     const credentials = {
       username,
       password,
@@ -71,10 +71,9 @@ export const createAccount = async (_prevState: any, formData: FormData) => {
     if (results) {
       cookies().set('userId', userId);
       cookies().set('username', username);
-      redirect('/dashboard');
     }
   } catch (error: any) {
-    if (error && error.code === 'ER_DUP_ENTRY') {
+    if (error.message.includes('AlreadyExists') || error.code === 'ERR_DUP_ENTRY') {
       return sendErrorToClient(
         'Username already exists. Please try with a different username.'
       );
@@ -83,4 +82,6 @@ export const createAccount = async (_prevState: any, formData: FormData) => {
     console.error(error);
     return sendErrorToClient('Error creating account. Please try again later.');
   }
+
+  redirect('/dashboard');
 };

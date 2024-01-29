@@ -24,7 +24,7 @@ export const createShortenedLink = async (
     userId: cookies().get('userId')?.value,
   };
 
-  if (Boolean(process.env.LOCAL)) {
+  if (process.env.LOCAL === 'true') {
     const shortURL: shortURLOutput | any = await db('api/addUrl', {
       method: 'POST',
       headers: {
@@ -70,6 +70,7 @@ export const createShortenedLink = async (
       message: 'URL Shortened successfully',
     };
   } catch (error) {
+    console.error(error);
     return sendErrorToClient('Something went wrong!');
   }
 };

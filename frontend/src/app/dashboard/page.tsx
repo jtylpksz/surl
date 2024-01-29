@@ -10,7 +10,7 @@ import CreateLinkDialog from './CreateLinkDialog';
 const getShortenedURLsList = async () => {
   const userId = cookies().get('userId')?.value;
 
-  if (Boolean(process.env.LOCAL)) {
+  if (process.env.LOCAL === 'true') {
     const shortenedURLs: any = await db('api/urlsByUser', {
       method: 'POST',
       headers: {
@@ -32,7 +32,11 @@ const getShortenedURLsList = async () => {
   try {
     const shortenedURLs = await dbProd.execute(query, [userId]);
 
-    return shortenedURLs;
+    if (shortenedURLs) {
+      return shortenedURLs.rows;
+    }
+
+
   } catch (error) {
     console.error(error);
     throw new Error('Something went wrong!');

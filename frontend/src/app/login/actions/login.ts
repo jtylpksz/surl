@@ -17,7 +17,7 @@ export const login = async (_prevState: any, formData: FormData) => {
     return sendErrorToClient('Username and password are required.');
   }
 
-  if (Boolean(process.env.LOCAL)) {
+  if (process.env.LOCAL === 'true') {
     const credentials = {
       username,
       password,
@@ -53,20 +53,20 @@ export const login = async (_prevState: any, formData: FormData) => {
     if (results) {
       // get password from db, decrypt it and compare with the original password
 
-      const encryptedPassword = results[0].password;
+      const encryptedPassword = results.rows[0].password;
       const decryptedPassword = decrypt(encryptedPassword);
 
       if (password !== decryptedPassword.message) {
         return sendErrorToClient('Invalid credentials.');
       }
 
-      return {
-        ok: true,
-        username: results[0].username,
-        userId: results[0].user_id,
-      };
+      cookies().set('userId', results.rows[0].user_id);
+      cookies().set('username', results.rows[0].username);
     }
   } catch (error) {
+    console.error(error);
     return sendErrorToClient('Error connecting to database');
   }
+
+  redirect('/dashboard');
 };
