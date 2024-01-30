@@ -17,7 +17,7 @@ export const shortURL = async (_prevState: any, formData: FormData) => {
     url: normalURL,
   };
 
-  if (process.env.NEXT_PUBLIC_DATABASE_LOCAL === 'true') {
+  if (process.env.DATABASE_LOCAL === 'true') {
     const shortURL: shortURLOutput | any = await db('api/addUrl', {
       method: 'POST',
       headers: {

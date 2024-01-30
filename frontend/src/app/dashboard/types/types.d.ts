@@ -5,3 +5,8 @@ export interface URLSListProps {
   user_id: string;
 }
 
+export interface DBResponse {
+  ok: boolean;
+  title: string;
+  description?: string;
+}

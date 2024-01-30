@@ -1,7 +1,7 @@
 import CryptoJS from 'crypto-js';
 
 export const encrypt = (message: string) => {
-  const secretKey: string = process.env.NEXT_PUBLIC_ENC_SECRET_KEY ?? '';
+  const secretKey: string = process.env.ENC_SECRET_KEY ?? '';
 
   const data = { message: message };
   const dataString = JSON.stringify(data);

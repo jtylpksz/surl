@@ -1,7 +1,7 @@
 import CryptoJS from 'crypto-js';
 
 export const decrypt = (encryptedMessage: string) => {
-  const secretKey: string = process.env.NEXT_PUBLIC_ENC_SECRET_KEY ?? '';
+  const secretKey: string = process.env.ENC_SECRET_KEY ?? '';
 
   try {
     const decrypted = CryptoJS.AES.decrypt(encryptedMessage, secretKey);

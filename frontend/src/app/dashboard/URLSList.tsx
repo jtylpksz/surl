@@ -3,8 +3,7 @@
 import { Ref, useRef, useState } from 'react';
 
 import Link from 'next/link';
-import { db } from '@/lib/localMySQL';
-import { db as dbProd } from '@/lib/planetscaleClient';
+import { deleteURLFromDB } from './actions/deleteURL';
 
 import {
   Card,
@@ -27,7 +26,7 @@ import { MoreVertical } from 'lucide-react';
 
 import { useToast } from '@/components/ui/use-toast';
 
-import { URLSListProps } from './types/types';
+import { DBResponse, URLSListProps } from './types/types';
 
 export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
   const [urlList, setUrlList] = useState<URLSListProps[]>(urls);
@@ -52,45 +51,17 @@ export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
     const filteredList = urlList.filter((url) => url.id !== id);
     setUrlList(filteredList);
 
-    if (process.env.NEXT_PUBLIC_DATABASE_LOCAL === 'true') {
-      const deleteShortenedURLOnDatabase = await db('api/deleteUrlByUser', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id }),
-      });
+    const response: DBResponse = await deleteURLFromDB(id);
 
-      if (deleteShortenedURLOnDatabase.ok) {
-        return toast({
-          title: 'URL deleted successfully!',
-        });
-      }
-      return toast({
+    if (response.ok) {
+      toast({
+        title: 'URL deleted successfully!',
+      })
+    } else {
+      toast({
         title: 'Something went wrong while deleting the URL',
         description: 'Please try again later.',
-      });
-    }
-
-    const query = `
-      DELETE FROM urls
-      WHERE id = ?;
-    `
-
-    try {
-      const deleteShortenedURLOnDatabase = await dbProd.execute(query, [id]);
-
-      if (deleteShortenedURLOnDatabase) {
-        return toast({
-          title: 'URL deleted successfully!',
-        });
-      }
-    } catch (error) {
-      console.error(error);
-      return toast({
-        title: 'Something went wrong while deleting the URL',
-        description: 'Please try again later.',
-      });
+      })
     }
   };
 
@@ -132,7 +103,7 @@ export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
 
               <CardContent>
                 <CardDescription className="flex flex-col">
-                  <span className='truncate'>{url.url}</span>
+                  <span className="truncate">{url.url}</span>
                   <span>Expires on {url.expiration_date.slice(0, 10)}</span>
                 </CardDescription>
               </CardContent>

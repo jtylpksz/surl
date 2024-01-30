@@ -10,7 +10,7 @@ import CreateLinkDialog from './CreateLinkDialog';
 const getShortenedURLsList = async () => {
   const userId = cookies().get('userId')?.value;
 
-  if (process.env.NEXT_PUBLIC_DATABASE_LOCAL === 'true') {
+  if (process.env.DATABASE_LOCAL === 'true') {
     const shortenedURLs: any = await db('api/urlsByUser', {
       method: 'POST',
       headers: {
