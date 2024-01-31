@@ -3,6 +3,7 @@
 import { Ref, useRef, useState } from 'react';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { deleteURLFromDB } from './actions/deleteURL';
 
 import {
@@ -27,6 +28,9 @@ import { MoreVertical } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 import { DBResponse, URLSListProps } from './types/types';
+
+// assets
+import NotFound from './assets/not-found.svg';
 
 export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
   const [urlList, setUrlList] = useState<URLSListProps[]>(urls);
@@ -56,25 +60,33 @@ export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
     if (response.ok) {
       toast({
         title: 'URL deleted successfully!',
-      })
+      });
     } else {
       toast({
         title: 'Something went wrong while deleting the URL',
         description: 'Please try again later.',
-      })
+      });
     }
   };
 
   return (
     <>
-      <section>
+      <search>
         <Input
           type="url"
           placeholder="Search links"
           ref={linkNameRef}
           onChange={filterUrlList}
         />
-      </section>
+      </search>
+
+      {urlList.length === 0 && (
+        <div className="flex flex-col items-center justify-center mt-8">
+          <Image src={NotFound} alt="Not found image illustration" width={240} height={240} />
+          <p className="text-2xl text-center mt-4 text-balance">You don&apos;t have any links. Click {`"Create new link"`} button to create one!</p>
+        </div>
+      )}
+
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 mt-4">
         {urlList.map((url: URLSListProps) => (
           <Link

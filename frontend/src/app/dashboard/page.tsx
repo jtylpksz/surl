@@ -58,8 +58,8 @@ const Dashboard = async () => {
 
   return (
     <main className="p-8 mx-auto flex-col items-center gap-2 py-8 md:py-12 md:pb-8">
-      <section className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl">Dashboard</h1>
+      <section className="sm:flex justify-between items-center mb-8">
+        <h1 className="mb-4 sm:mb-0 text-3xl">Dashboard</h1>
         <CreateLinkDialog />
       </section>
 

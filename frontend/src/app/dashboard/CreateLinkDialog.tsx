@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useFormState } from 'react-dom';
-import {useRouter} from 'next/navigation';
 
 import {
   AlertDialog,
@@ -49,7 +48,7 @@ const CreateLinkDialog = () => {
 
   return (
     <AlertDialog open={openedFormModal} onOpenChange={setOpenedFormModal}>
-      <AlertDialogTrigger className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+      <AlertDialogTrigger className="w-full sm:w-auto inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
         <Plus /> Create new link
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -71,11 +70,11 @@ const CreateLinkDialog = () => {
           </Label>
 
           <div className="flex items-center justify-end gap-2">
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel className="mt-0">Cancel</AlertDialogCancel>
             <SubmitButton
               defaultValue="Create Link"
               valueInRequest="Creating Link..."
-              className="w-inherit mt-2"
+              className="w-inherit mt-0"
             />
           </div>
         </form>
