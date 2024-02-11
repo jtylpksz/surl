@@ -47,7 +47,12 @@ export const createShortenedLink = async (
 
   const currentDate = new Date();
   const expirationDate = new Date(currentDate);
-  expirationDate.setDate(currentDate.getDate() + 60);
+  
+  const isAuth = cookies().get('userId');
+  
+  if (isAuth) expirationDate.setDate(currentDate.getDate() + 60);
+  else expirationDate.setDate(currentDate.getDate() + 30);
+
   const formattedExpirationDate = expirationDate
     .toISOString()
     .slice(0, 19)

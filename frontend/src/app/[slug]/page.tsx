@@ -22,17 +22,21 @@ const getWebsiteURL = async (id: string) => {
       message: 'URL not found.',
     };
   } else {
-    const getAll = await dbProd.execute(
-      `SELECT * FROM urls WHERE id = ?;`, [id]
-    );
-
-    if (getAll.rows[0].id === id && getAll.rows[0].url) {
-      return getAll.rows[0].url;
-    }
-    return {
-      notFound: true,
-      message: 'URL not found.',
-    };
+    try {
+      const getAll = await dbProd.execute(
+        `SELECT * FROM urls WHERE id = ?;`, [id]
+      );
+  
+      if (getAll.rows[0].id === id && getAll.rows[0].url) {
+        return getAll.rows[0].url;
+      }
+    } catch (error) {
+      console.error(error);
+      return {
+        notFound: true,
+        message: 'URL not found.',
+      };
+    }    
   }
 };
 
