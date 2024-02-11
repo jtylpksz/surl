@@ -30,4 +30,4 @@ test('Login on Login page', async ({ page }) => {
   await page.waitForURL('**/dashboard');
 
   expect(page).toHaveURL('http://localhost:3000/dashboard');
-})
+});

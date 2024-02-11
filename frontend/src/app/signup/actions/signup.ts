@@ -73,7 +73,10 @@ export const createAccount = async (_prevState: any, formData: FormData) => {
       cookies().set('username', username);
     }
   } catch (error: any) {
-    if (error.message.includes('AlreadyExists') || error.code === 'ERR_DUP_ENTRY') {
+    if (
+      error.message.includes('AlreadyExists') ||
+      error.code === 'ERR_DUP_ENTRY'
+    ) {
       return sendErrorToClient(
         'Username already exists. Please try with a different username.'
       );

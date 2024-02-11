@@ -59,7 +59,12 @@ export const createShortenedLink = async (
   `;
 
   try {
-    await dbProd.execute(query, [id, normalURL, formattedExpirationDate, data.userId]);
+    await dbProd.execute(query, [
+      id,
+      normalURL,
+      formattedExpirationDate,
+      data.userId,
+    ]);
     const getAll = await dbProd.execute('SELECT * FROM urls WHERE url = ?;', [
       normalURL,
     ]);

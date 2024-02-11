@@ -7,8 +7,11 @@ interface OutputReq {
   url: string;
 }
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const getWebsiteURL = async (id: string) => {
-  if (process.env.LOCAL === 'true') {
+  if (process.env.DATABASE_LOCAL === 'true') {
     const fullURL: OutputReq[] | any = await db(`api/get/${id}`);
 
     if (fullURL[0]?.id === id && fullURL[0]?.url) {
@@ -20,7 +23,7 @@ const getWebsiteURL = async (id: string) => {
     };
   } else {
     const getAll = await dbProd.execute(
-      `SELECT * FROM urls WHERE id = '${id}';`
+      `SELECT * FROM urls WHERE id = ?;`, [id]
     );
 
     if (getAll.rows[0].id === id && getAll.rows[0].url) {

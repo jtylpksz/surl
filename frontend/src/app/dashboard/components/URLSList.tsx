@@ -4,7 +4,7 @@ import { Ref, useRef, useState } from 'react';
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { deleteURLFromDB } from './actions/deleteURL';
+import { deleteURLFromDB } from '../actions/deleteURL';
 
 import {
   Card,
@@ -27,10 +27,9 @@ import { MoreVertical } from 'lucide-react';
 
 import { useToast } from '@/components/ui/use-toast';
 
-import { DBResponse, URLSListProps } from './types/types';
+import { DBResponse, URLSListProps } from '../types/types';
 
-// assets
-import NotFound from './assets/not-found.svg';
+import NotFound from '../assets/not-found.svg';
 
 export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
   const [urlList, setUrlList] = useState<URLSListProps[]>(urls);
@@ -82,8 +81,16 @@ export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
 
       {urlList.length === 0 && (
         <div className="flex flex-col items-center justify-center mt-8">
-          <Image src={NotFound} alt="Not found image illustration" width={240} height={240} />
-          <p className="text-2xl text-center mt-4 text-balance">You don&apos;t have any links. Click {`"Create new link"`} button to create one!</p>
+          <Image
+            src={NotFound}
+            alt="Not found image illustration"
+            width={240}
+            height={240}
+          />
+          <p className="text-2xl text-center mt-4 text-balance [max-width:30ch]">
+            You don&apos;t have any links. Click the {`"Create new link"`}{' '}
+            button to create one!
+          </p>
         </div>
       )}
 

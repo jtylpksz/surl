@@ -17,17 +17,15 @@ import { Input } from '@/components/ui/input';
 import { SubmitButton } from '@/components/submit-button';
 import { useToast } from '@/components/ui/use-toast';
 
-import { Plus } from 'lucide-react';
-import { createShortenedLink } from './actions/createShortenedLink';
+import { changePassword } from '../actions/changePassword';
 
-const CreateLinkDialog = () => {
+export const ChangePasswordDialog = () => {
   const [openedFormModal, setOpenedFormModal] = useState(false);
 
   const { toast } = useToast();
 
-  const [broadcast, createLink] = useFormState(createShortenedLink, {
+  const [broadcast, changePasswordAction] = useFormState(changePassword, {
     ok: false,
-    urlShortened: '',
     message: '',
   });
 
@@ -35,7 +33,7 @@ const CreateLinkDialog = () => {
     if (broadcast.ok) {
       setOpenedFormModal(false);
       toast({
-        title: 'Link created successfully!',
+        title: 'Password changed successfully!',
       });
       window.location.reload();
     } else if (!broadcast.ok && broadcast.message) {
@@ -49,21 +47,35 @@ const CreateLinkDialog = () => {
   return (
     <AlertDialog open={openedFormModal} onOpenChange={setOpenedFormModal}>
       <AlertDialogTrigger className="w-full sm:w-auto inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
-        <Plus /> Create new link
+        Change your password
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Create new link</AlertDialogTitle>
+          <AlertDialogTitle>Change your password</AlertDialogTitle>
         </AlertDialogHeader>
 
-        <form action={createLink} className="flex flex-col mt-3 gap-4">
+        <form
+          action={changePasswordAction}
+          className="flex flex-col mt-3 gap-4"
+        >
           <Label>
-            <span>Your long URL</span>
+            <span>Your current password</span>
             <Input
-              type="url"
-              name="normalURL"
-              placeholder="Paste your long URL here"
+              type="password"
+              name="currentPassword"
+              placeholder="Type your current password here"
               autoFocus
+              className="mt-2"
+              required
+            />
+          </Label>
+
+          <Label>
+            <span>Your new password</span>
+            <Input
+              type="password"
+              name="newPassword"
+              placeholder="Type your new password here"
               className="mt-2"
               required
             />
@@ -72,8 +84,8 @@ const CreateLinkDialog = () => {
           <div className="flex items-center justify-end gap-2">
             <AlertDialogCancel className="mt-0">Cancel</AlertDialogCancel>
             <SubmitButton
-              defaultValue="Create Link"
-              valueInRequest="Creating Link..."
+              defaultValue="Change Password"
+              valueInRequest="Changing Password..."
               className="w-inherit mt-0"
             />
           </div>
@@ -82,5 +94,3 @@ const CreateLinkDialog = () => {
     </AlertDialog>
   );
 };
-
-export default CreateLinkDialog;

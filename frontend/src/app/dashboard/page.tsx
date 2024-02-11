@@ -4,8 +4,9 @@ import { redirect } from 'next/navigation';
 import { db } from '@/lib/localMySQL';
 import { db as dbProd } from '@/lib/planetscaleClient';
 
-import { URLSList } from './URLSList';
-import CreateLinkDialog from './CreateLinkDialog';
+import { URLSList } from './components/URLSList';
+import { CreateLinkDialog } from './components/CreateLinkDialog';
+import { Navigation } from './components/Navigation';
 
 const getShortenedURLsList = async () => {
   const userId = cookies().get('userId')?.value;
@@ -35,8 +36,6 @@ const getShortenedURLsList = async () => {
     if (shortenedURLs) {
       return shortenedURLs.rows;
     }
-
-
   } catch (error) {
     console.error(error);
     throw new Error('Something went wrong!');
@@ -57,14 +56,16 @@ const Dashboard = async () => {
   const shortenedURLsList = await getShortenedURLsList();
 
   return (
-    <main className="p-8 mx-auto flex-col items-center gap-2 py-8 md:py-12 md:pb-8">
-      <section className="sm:flex justify-between items-center mb-8">
-        <h1 className="mb-4 sm:mb-0 text-3xl">Dashboard</h1>
-        <CreateLinkDialog />
-      </section>
+    <>
+      <Navigation />
+      <main className="px-8 mx-auto flex-col items-center gap-2">
+        <section className="sm:flex justify-between items-center mb-8">
+          <CreateLinkDialog />
+        </section>
 
-      <URLSList urls={shortenedURLsList} />
-    </main>
+        <URLSList urls={shortenedURLsList} />
+      </main>
+    </>
   );
 };
 

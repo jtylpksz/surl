@@ -2,9 +2,11 @@
 
 import { db } from '@/lib/localMySQL';
 import { db as dbProd } from '@/lib/planetscaleClient';
-import {DBResponse} from '../types/types';
+import { DBResponse } from '../types/types';
 
-export const deleteURLFromDB = async (id: string | number): Promise<DBResponse> => {
+export const deleteURLFromDB = async (
+  id: string | number
+): Promise<DBResponse> => {
   if (process.env.DATABASE_LOCAL === 'true') {
     const deleteShortenedURLOnDatabase = await db('api/deleteUrlByUser', {
       method: 'DELETE',
@@ -53,5 +55,5 @@ export const deleteURLFromDB = async (id: string | number): Promise<DBResponse> 
     ok: false,
     title: 'Something went wrong while deleting the URL',
     description: 'Please try again later.',
-  }
-}
+  };
+};
