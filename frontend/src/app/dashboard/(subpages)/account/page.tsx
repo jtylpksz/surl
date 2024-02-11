@@ -1,9 +1,6 @@
 import { ChangePasswordDialog } from './components/ChangePasswordDialog';
 import { DeleteAccountDialog } from './components/DeleteAccountDialog';
 
-export const dynanic = 'force-dynamic';
-export const revalidate = 0;
-
 const AccountSettings = () => {
   return (
     <main className="mx-auto max-w-96 flex-col items-center gap-2 py-8 md:py-12 md:pb-8">
