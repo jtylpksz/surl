@@ -54,7 +54,7 @@ export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
     const filteredList = urlList.filter((url) => url.id !== id);
     setUrlList(filteredList);
 
-    const response: DBResponse = await deleteURLFromDB(id);
+    const response: DBResponse | any = await deleteURLFromDB(id);
 
     if (response.ok) {
       toast({
