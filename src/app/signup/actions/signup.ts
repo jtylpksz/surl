@@ -23,8 +23,8 @@ export const createAccount = async (_prevState: any, formData: FormData) => {
   const userId = randomBytes(6).toString('hex');
 
   const query = `
-    INSERT INTO users (id, username, password, user_id)
-    VALUES (?, ?, ?, ?);
+    INSERT INTO users (username, password, user_id)
+    VALUES (?, ?, ?);
   `;
 
   try {
@@ -32,7 +32,7 @@ export const createAccount = async (_prevState: any, formData: FormData) => {
 
     const results = await turso.execute({
       sql: query,
-      args: [userId, username, encryptedPassword, userId],
+      args: [username, encryptedPassword, userId],
     });
 
     if (results) {

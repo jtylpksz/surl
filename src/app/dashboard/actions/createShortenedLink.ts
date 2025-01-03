@@ -16,28 +16,15 @@ export const createShortenedLink = async (
 
   const id = randomBytes(6).toString('hex');
 
-  const currentDate = new Date();
-  const expirationDate = new Date(currentDate);
-
-  const isAuth = cookies().get('userId');
-
-  if (isAuth) expirationDate.setDate(currentDate.getDate() + 60);
-  else expirationDate.setDate(currentDate.getDate() + 30);
-
-  const formattedExpirationDate = expirationDate
-    .toISOString()
-    .slice(0, 19)
-    .replace('T', ' ');
-
   const query = `
-    INSERT INTO urls (id, url, expiration_date, user_id)
-    VALUES (?, ?, ?, ?);
+    INSERT INTO urls (id, url, user_id)
+    VALUES (?, ?, ?);
   `;
 
   try {
     await turso.execute({
       sql: query,
-      args: [id, normalURL, formattedExpirationDate, userId],
+      args: [id, normalURL, userId],
     });
     const getAll = await turso.execute({
       sql: 'SELECT * FROM urls WHERE url = ?;',

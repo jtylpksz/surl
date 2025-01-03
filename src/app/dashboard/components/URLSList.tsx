@@ -123,7 +123,6 @@ export const URLSList = ({ urls }: { urls: URLSListProps[] }) => {
               <CardContent>
                 <CardDescription className="flex flex-col">
                   <span className="truncate">{url.url}</span>
-                  <span>Expires on {url.expiration_date.slice(0, 10)}</span>
                 </CardDescription>
               </CardContent>
             </Card>

@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { cookies } from 'next/headers';
 
 import { Github } from 'lucide-react';
-import { ModeToggle } from '../mode-toggle';
-import { Button } from '../ui/button';
+import { ModeToggle } from '@/components/mode-toggle';
+import { Button } from '@/components/ui/button';
 import { GoToDashboardButton } from './goToDashboardButton';
 
 export const Nav = () => {
@@ -13,7 +13,7 @@ export const Nav = () => {
   return (
     <nav className="flex items-center justify-end w-full gap-4">
       <a
-        href="https://github.com/jtylpksz/surl"
+        href="https://github.com/martindotweb/surl"
         target="_blank"
         rel="noopener noreferrer"
         title="Source code"

@@ -10,7 +10,7 @@ const getShortenedURLsList = async () => {
   const userId = cookies().get('userId')?.value as string;
 
   const query = `
-    SELECT urls.id, urls.url, urls.expiration_date, urls.user_id
+    SELECT urls.id, urls.url, urls.user_id
     FROM urls
     INNER JOIN users ON urls.user_id = users.user_id
     WHERE users.user_id = ?;

@@ -72,10 +72,6 @@ export const ShortURLFormHomePage = () => {
         defaultValue="Shorten URL"
         valueInRequest="Shortening URL..."
       />
-      <small className="max-w-80 opacity-70">
-        The shortened URL has a duration of 30 days. But if you have an account
-        , the URL will be valid for 60 days (30 days more).
-      </small>
     </form>
   );
 };
